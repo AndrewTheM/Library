@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/libStyles.css">
-	<script src="js/script.js"></script>
+	<script async src="js/script.js"></script>
 	<title>Library</title>
 </head>
 <body>
@@ -18,7 +18,39 @@
 		</nav>
 	</header>
 	<main>
-		
+		<button id="add-btn">New book</button>
+		<div id="popup-overlay">
+			<div id="popup">
+				<div class="cross">+</div>
+				<h2>New Book</h2>
+				<form method="post" action="">
+					<input type="text" name="name" placeholder="Name" required>
+					<input type="text" name="author" placeholder="Author" required>
+					<input type="number" min="0" name="year" placeholder="Year of Publish" required>
+					<input type="text" name="publisher" placeholder="Publisher" required>
+					<input type="number" min="1" name="pages" placeholder="Pages Number" required>
+					<input type="number" min="1" name="copies" placeholder="Copies Number" required>
+					<button type="submit" id="save-btn">Save</button>
+				</form>
+			</div>
+		</div>
+		<hr>
+		<table id="table" border="1" cellspacing="0" cellpadding="5">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Name</th>
+					<th>Author</th>
+					<th>Year of Publish</th>
+					<th>Publisher</th>
+					<th>Pages</th>
+					<th>Copies Left</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody id="table-body"></tbody>
+		</table>
 	</main>
 </body>
 </html>
