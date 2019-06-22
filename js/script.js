@@ -18,6 +18,16 @@ class Book {
   takeBack() {
     this.copiesLeft++;
   }
+
+  getAsTableRow() {
+    var row = document.createElement("tr");
+    var cell = document.createElement("td");
+    var cells = [];
+    return `<tr><td>${this.id}</td><td>${this.name}</td>` +
+               `<td>${this.authorName}</td><td>${this.yearOfPublish}</td>` +
+               `<td>${this.publisherName}</td><td>${this.pagesNumber}</td>` +
+               `<td>${this.copiesLeft}</td><td>edit</td><td>del</td></tr>`;
+  }
 }
 
 
@@ -55,11 +65,20 @@ class Card {
 
 
 var addButton = document.getElementById("add-btn");
+var saveButton = document.getElementById("save-btn");
 var cross = document.querySelector(".cross");
 var popupOverlay = document.getElementById("popup-overlay");
+var addForm = document.add;
 addButton.addEventListener("click", () => {
   popupOverlay.style.display = "flex";
 });
 cross.addEventListener("click", () => {
   popupOverlay.style.display = "none";
+});
+addForm.addEventListener("submit", (e) => {
+  if (!addForm.checkValidity()) e.preventDefault();
+  var book = new Book(addForm.name, addForm.author, addForm.year,
+                      addForm.publisher, addForm.pages, addForm.copies);
+
+
 });
