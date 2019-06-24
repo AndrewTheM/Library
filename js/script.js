@@ -1,7 +1,7 @@
 class Book {
   constructor(name, authorName, yearOfPublish,
               publisherName, pagesNumber, copiesLeft) {
-    if (Book.counter === undefined) Book.counter = 0;
+    if (Book.counter === undefined) Book.counter = 1;
     this.id = Book.counter++;
     this.name = name || "";
     this.authorName = authorName || "";
@@ -19,21 +19,15 @@ class Book {
     this.copiesLeft++;
   }
 
-  getAsTableRow() {
-    var row = document.createElement("tr");
-    var cell = document.createElement("td");
-    var cells = [];
-    return `<tr><td>${this.id}</td><td>${this.name}</td>` +
-               `<td>${this.authorName}</td><td>${this.yearOfPublish}</td>` +
-               `<td>${this.publisherName}</td><td>${this.pagesNumber}</td>` +
-               `<td>${this.copiesLeft}</td><td>edit</td><td>del</td></tr>`;
+  addAsTableRow() {
+
   }
 }
 
 
 class Visitor {
   constructor(fullName, phone) {
-    if (Visitor.counter === undefined) Visitor.counter = 0;
+    if (Visitor.counter === undefined) Visitor.counter = 1;
     this.id = Visitor.counter++;
     this.fullName = fullName || "";
     this.phone = phone || "";
@@ -43,7 +37,7 @@ class Visitor {
 
 class Card {
   constructor(visitorId, bookId, borrowDate) {
-    if (Card.counter === undefined) Card.counter = 0;
+    if (Card.counter === undefined) Card.counter = 1;
     this.id = Card.counter++;
     this.visitorId = visitorId || 0;
     this.bookId = bookId || 0;
@@ -63,7 +57,36 @@ class Card {
   }
 }
 
+function reloadTable() {
+  var table = document.getElementById("dataTable");
+  var newRow, newCell, index;
 
+  books = JSON.parse(localStorage.getItem("books"));
+  if (books instanceOf Array)
+      books = [];
+
+  if (books !== null)
+    books.forEach((book) => {
+      newRow = table.insertRow(table.rows.length);
+      index = 0;
+      for (var key in book)
+        if (typeof key !== "function") {
+          newCell = newRow.insertCell(index++);
+          newCell.innerHTML = book[key];
+        }
+    });
+}
+
+function addBook(book) {
+  if (books == null)
+    books = [];
+  books.push(book);
+  localStorage.setItem("books", JSON.stringify(books));
+  reloadTable();
+}
+
+var books = [];
+reloadTable();
 var addButton = document.getElementById("add-btn");
 var saveButton = document.getElementById("save-btn");
 var cross = document.querySelector(".cross");
@@ -77,8 +100,9 @@ cross.addEventListener("click", () => {
 });
 addForm.addEventListener("submit", (e) => {
   if (!addForm.checkValidity()) e.preventDefault();
-  var book = new Book(addForm.name, addForm.author, addForm.year,
-                      addForm.publisher, addForm.pages, addForm.copies);
-
-
+  addBook( new Book(addForm.name.value, addForm.author.value,
+                      addForm.year.value, addForm.publisher.value,
+                      addForm.pages.value, addForm.copies.value) );
+  popupOverlay.style.display = "none";
+  e.preventDefault();
 });
