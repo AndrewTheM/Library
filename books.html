@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/libStyles.css">
-	<script async src="js/script.js"></script>
+	<script async src="js/bookScript.js"></script>
 	<title>Library</title>
 </head>
 <body>
@@ -19,11 +19,11 @@
 	</header>
 	<main>
 		<button id="add-btn">New book</button>
-		<div id="popup-overlay">
-			<div id="popup">
+		<div class="popup-overlay">
+			<div class="popup">
 				<div class="cross">+</div>
 				<h2>New Book</h2>
-				<form name="add" method="post">
+				<form name="add">
 					<input type="text" name="name" placeholder="Name" required>
 					<input type="text" name="author" placeholder="Author" required>
 					<input type="number" min="0" name="year" placeholder="Year of Publish" required>
@@ -35,7 +35,7 @@
 			</div>
 		</div>
 		<hr>
-		<table id="dataTable" border="1" cellspacing="0" cellpadding="5">
+		<table border="1" cellspacing="0" cellpadding="5">
 			<thead>
 				<tr>
 					<th>ID</th>
@@ -49,6 +49,7 @@
 					<th>Delete</th>
 				</tr>
 			</thead>
+			<tbody id="table-body"></tbody>
 		</table>
 	</main>
 </body>

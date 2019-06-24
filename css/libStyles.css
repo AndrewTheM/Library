@@ -37,7 +37,7 @@ main {
 	padding: 20px;
 }
 
-#popup-overlay {
+.popup-overlay {
 	background-color: rgba(0, 0, 0, 0.7);
 	position: absolute;
 	top: 0;
@@ -49,11 +49,10 @@ main {
 	align-items: center;
 }
 
-#popup {
+.popup {
 	background-color: lightgray;
 	padding: 20px 50px 50px;
 	width: 350px;
-	height: 350px;
 	border-radius: 5px;
 	position: relative;
 	text-align: center;
@@ -91,5 +90,5 @@ hr {
 
 table {
 	width: 100%;
-
+	text-align: center;
 }

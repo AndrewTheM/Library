@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/libStyles.css">
-	<script src="js/script.js"></script>
+	<script async src="js/cardScript.js"></script>
 	<title>Library</title>
 </head>
 <body>
@@ -18,7 +18,34 @@
 		</nav>
 	</header>
 	<main>
-		
+		<button id="add-btn">New card</button>
+		<div class="popup-overlay">
+			<div class="popup">
+				<div class="cross">+</div>
+				<h2>New Card</h2>
+				<form name="add">
+					<input type="text" name="visitor" placeholder="Visitor" required>
+					<input type="text" name="book" placeholder="Book" required>
+					<input type="date" name="borrow" placeholder="Borrow Date" required>
+					<button type="submit" id="save-btn">Save</button>
+				</form>
+			</div>
+		</div>
+		<hr>
+		<table border="1" cellspacing="0" cellpadding="5">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Visitor</th>
+					<th>Book</th>
+					<th>Borrow Date</th>
+					<th>Return Date</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody id="table-body"></tbody>
+		</table>
 	</main>
 </body>
 </html>

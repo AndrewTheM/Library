@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/libStyles.css">
-	<script src="js/script.js"></script>
+	<script async src="js/visitorScript.js"></script>
 	<title>Library</title>
 </head>
 <body>
@@ -18,7 +18,31 @@
 		</nav>
 	</header>
 	<main>
-		
+		<button id="add-btn">New visitor</button>
+		<div class="popup-overlay">
+			<div class="popup">
+				<div class="cross">+</div>
+				<h2>New Visitor</h2>
+				<form name="add">
+					<input type="text" name="name" placeholder="Full Name" required>
+					<input type="text" name="phone" placeholder="Phone" required>
+					<button type="submit" id="save-btn">Save</button>
+				</form>
+			</div>
+		</div>
+		<hr>
+		<table border="1" cellspacing="0" cellpadding="5">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>Full Name</th>
+					<th>Phone</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody id="table-body"></tbody>
+		</table>
 	</main>
 </body>
 </html>
