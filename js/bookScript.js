@@ -14,23 +14,30 @@ class Book {
 
 
 function reloadTable() {
-  var newRow, newCell, index;
+  var newRow, newCell, len, index;
   var newTableBody = document.createElement("tbody");
   newTableBody.setAttribute("id", "table-body");
 
   books = JSON.parse(localStorage.getItem("books")) || [];
   books.forEach((book) => {
-    newRow = newTableBody.insertRow(newTableBody.rows.length);
+    len = newTableBody.rows.length;
+    newRow = newTableBody.insertRow(len);
     index = 0;
-    for (var prop in book)
+
+    for (var prop in book) {
       if (typeof prop !== "function") {
         newCell = newRow.insertCell(index++);
         newCell.innerHTML = book[prop];
       }
-      newCell = newRow.insertCell(index++);
-      newCell.innerHTML = "<input class=\"table-btn\" type=\"image\" src=\"media/edit.png\" alt=\"Edit\">";
-      newCell = newRow.insertCell(index++);
-      newCell.innerHTML = "<input class=\"table-btn\" type=\"image\" src=\"media/delete.png\" alt=\"Delete\">";
+    }
+
+    newCell = newRow.insertCell(index++);
+    newCell.innerHTML = `<input class="table-btn" onclick="showEditForm(${len})" ` +
+                               `type="image" src="media/edit.png" alt="Edit">`;
+                               
+    newCell = newRow.insertCell(index++);
+    newCell.innerHTML = `<input class="table-btn" onclick="deleteFromIndex(${len})"` +
+                               `type="image" src="media/delete.png" alt="Delete">`;
   });
 
   var tableBody = document.getElementById("table-body");
@@ -38,10 +45,43 @@ function reloadTable() {
   table.replaceChild(newTableBody, tableBody);
 }
 
-function addBook(book) {
-  books.push(book);
+function saveData() {
   localStorage.setItem("books", JSON.stringify(books));
   reloadTable();
+}
+
+function showEditForm(index) {
+  var editForm = document.edit;
+
+  editForm.name.value = books[index].name;
+  editForm.author.value = books[index].authorName;
+  editForm.year.value = books[index].yearOfPublish;
+  editForm.publisher.value = books[index].publisherName;
+  editForm.pages.value = books[index].pagesNumber;
+  editForm.copies.value = books[index].copiesLeft;
+
+  popupOverlays[1].style.display = "flex";
+  popupOverlays[1].style.height = `${document.documentElement.scrollHeight}px`;
+
+  editForm.onsubmit = function() {
+    if (editForm.checkValidity()) {
+      books[index].name = editForm.name.value;
+      books[index].authorName = editForm.author.value;
+      books[index].yearOfPublish = editForm.year.value;
+      books[index].publisherName = editForm.publisher.value;
+      books[index].pagesNumber = editForm.pages.value;
+      books[index].copiesLeft = editForm.copies.value;
+
+      saveData();
+      popupOverlays[1].style.display = "none";
+    }
+    e.preventDefault();
+  };
+}
+
+function deleteFromIndex(index) {
+  books.splice(index, 1);
+  saveData();
 }
 
 
@@ -51,8 +91,9 @@ Book.counter = localStorage.getItem("bookCounter") || 1;
 reloadTable();
 
 var addButton = document.getElementById("add-btn");
-var crosses = document.getElementsByClassName("cross");
+var reassignButton = document.getElementById("reassign-btn")
 var popupOverlays = document.getElementsByClassName("popup-overlay");
+var crosses = document.getElementsByClassName("cross");
 var addForm = document.add;
 
 addButton.addEventListener("click", () => {
@@ -60,20 +101,32 @@ addButton.addEventListener("click", () => {
   popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-crosses[0].addEventListener("click", () => {
-  popupOverlays[0].style.display = "none";
+reassignButton.addEventListener("click", () => {
+  var confirmed = confirm("Warning!\nYou are about to reassign books' IDs in order " +
+                          "starting with 1.\nYou won't be able to undo this action.");
+  if (confirmed) {
+    for (var i = 0; i < books.length; i++)
+      books[i].id = i + 1;
+    Book.counter = ++i;
+    saveData();
+  }
 });
 
-crosses[1].addEventListener("click", () => {
-  popupOverlays[1].style.display = "none";
-});
+for (let i = 0; i < crosses.length; i++) {
+  crosses[i].addEventListener("click", () => {
+    popupOverlays[i].style.display = "none";
+  });
+}
 
 addForm.addEventListener("submit", (e) => {
   if (addForm.checkValidity()) {
-    addBook( new Book(addForm.name.value, addForm.author.value,
+    books.push( new Book(addForm.name.value, addForm.author.value,
                         addForm.year.value, addForm.publisher.value,
                         addForm.pages.value, addForm.copies.value) );
+
+    saveData();
     popupOverlays[0].style.display = "none";
+    addForm.clear();
   }
   e.preventDefault();
 });

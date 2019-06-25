@@ -23,10 +23,21 @@
 			<div class="popup">
 				<div class="cross">+</div>
 				<h2>New Visitor</h2>
-				<form name="add">
+				<form name="add" method="post">
 					<input type="text" name="name" placeholder="Full Name" required>
 					<input type="tel" name="phone" placeholder="Phone" required>
-					<button type="submit" id="save-btn">Save</button>
+					<button type="submit">Add</button>
+				</form>
+			</div>
+		</div>
+		<div class="popup-overlay">
+			<div class="popup">
+				<div class="cross">+</div>
+				<h2>Edit Visitor</h2>
+				<form name="edit">
+					<input type="text" name="name" placeholder="Full Name" required>
+					<input type="tel" name="phone" placeholder="Phone" required>
+					<button type="submit">Save</button>
 				</form>
 			</div>
 		</div>

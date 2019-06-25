@@ -19,11 +19,12 @@
 	</header>
 	<main>
 		<button id="add-btn">New book</button>
+		<button id="reassign-btn">Reassign ID</button>
 		<div class="popup-overlay">
 			<div class="popup">
 				<div class="cross">+</div>
 				<h2>New Book</h2>
-				<form name="add">
+				<form name="add" method="post">
 					<input type="text" name="name" placeholder="Name" required>
 					<input type="text" name="author" placeholder="Author" required>
 					<input type="number" min="0" name="year" placeholder="Year of Publish" required>
@@ -38,7 +39,7 @@
 			<div class="popup">
 				<div class="cross">+</div>
 				<h2>Edit Book</h2>
-				<form name="edit">
+				<form name="edit" method="post">
 					<input type="text" name="name" placeholder="Name" required>
 					<input type="text" name="author" placeholder="Author" required>
 					<input type="number" min="0" name="year" placeholder="Year of Publish" required>

@@ -1,10 +1,10 @@
 class Card {
-  constructor(visitorName, bookName, borrowDate) {
+  constructor(visitorId, bookId) {
     this.id = Card.counter++;
-    this.visitorName = visitorName || 0;
-    this.bookName = bookName || 0;
-    this.borrowDate = borrowDate || this.stringifyDate();
-    this.returnDate = "<input class=\"table-btn\" type=\"image\" src=\"media/return.png\" alt=\"Return\">";
+    this.visitorName = visitorId || 1;
+    this.bookName = bookId || 1;
+    this.borrowDate = this.stringifyDate();
+    this.returnDate = null;
   }
 
   stringifyDate(date = new Date()) {
@@ -22,23 +22,34 @@ class Card {
 
 
 function reloadTable() {
-  var newRow, newCell, index;
+  var newRow, newCell, len;
   var newTableBody = document.createElement("tbody");
   newTableBody.setAttribute("id", "table-body");
 
-  cards = JSON.parse(localStorage.getItem("cards"));
-  if (cards === null) cards = [];
+  cards = JSON.parse(localStorage.getItem("cards")) || [];
+  visitors = JSON.parse(localStorage.getItem("visitors")) || [];
+  books = JSON.parse(localStorage.getItem("books")) || [];
 
   cards.forEach((card) => {
-    newRow = newTableBody.insertRow(newTableBody.rows.length);
-    index = 0;
-    for (var prop in card)
-      if (typeof prop !== "function") {
-        newCell = newRow.insertCell(index++);
-        newCell.innerHTML = card[prop];
-      }
-      newCell = newRow.insertCell(index++);
-      newCell.innerHTML = "<input class=\"table-btn\" type=\"image\" src=\"media/edit.png\" alt=\"Edit\">";
+    len = newTableBody.rows.length;
+    newRow = newTableBody.insertRow(len);
+
+    newCell = newRow.insertCell(0);
+    newCell.innerHTML = visitors[card.visitorId - 1].fullName;
+
+    newCell = newRow.insertCell(1);
+    newCell.innerHTML = books.filter((book) => book.id == card.bookId)[0].name;
+
+    newCell = newRow.insertCell(2);
+    newCell.innerHTML = card.borrowDate;
+
+    newCell = newRow.insertCell(3);
+    newCell.innerHTML = `<input class="table-btn" onclick="" ` +
+                               `type="image" src="media/return.png" alt="Return">`;
+
+    newCell = newRow.insertCell(4);
+    newCell.innerHTML = `<input class="table-btn" onclick="showEditForm(${len})" ` +
+                               `type="image" src="media/edit.png" alt="Edit">`;
   });
 
   var tableBody = document.getElementById("table-body");
@@ -47,31 +58,24 @@ function reloadTable() {
 
 function fillOptions() {
   var addForm = document.add;
-  var visitors = JSON.parse(localStorage.getItem("visitors")) || [];
-  var books = JSON.parse(localStorage.getItem("books")) || [];
+
+  books = JSON.parse(localStorage.getItem("books")) || [];
 
   for (var i = 0; i < addForm.book.options.length; i++) {
     addForm.book.remove(i);
   }
 
   for (var i = 0; i < visitors.length; i++) {
-    addForm.visitor.add( new Option(visitors[i].fullName, i) );
+    addForm.visitor.add( new Option(visitors[i].fullName, visitors[i].id) );
   }
 
   for (var i = 0; i < books.length; i++)
     if (books[i].copiesLeft > 0) {
-      addForm.book.add( new Option(books[i].name, i) );
+      addForm.book.add( new Option(books[i].name, books[i].id) );
     }
 }
 
-function addCard(card) {
-  cards.push(card);
-  localStorage.setItem("cards", JSON.stringify(cards));
-  reloadTable();
-}
-
 function giveBookOut(index) {
-  var books = JSON.parse(localStorage.getItem("books"));
   var book = books[index];
   book.copiesLeft--;
   localStorage.setItem("books", JSON.stringify(books));
@@ -79,9 +83,32 @@ function giveBookOut(index) {
   return book;
 }
 
+function showEditForm(index) {
+  var editForm = document.edit;
+
+  editForm.visitor.selectedIndex = cards[index].visitorId;
+  editForm.book.value = visitors[id].phone;
+
+  popupOverlays[1].style.display = "flex";
+  popupOverlays[1].style.height = `${document.documentElement.scrollHeight}px`;
+
+  editForm.onsubmit = function() {
+    if (editForm.checkValidity()) {
+      visitors[id].fullName = editForm.name.value;
+      visitors[id].phone = editForm.phone.value;
+
+      localStorage.setItem("visitors", JSON.stringify(visitors));
+      reloadTable();
+      popupOverlays[1].style.display = "none";
+    }
+    e.preventDefault();
+  };
+}
 
 
-var cards = [];
+
+
+var cards = [], visitors, books;
 Card.counter = localStorage.getItem("cardCounter") || 1;
 reloadTable();
 fillOptions();
@@ -96,21 +123,19 @@ addButton.addEventListener("click", () => {
   popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-crosses[0].addEventListener("click", () => {
-  popupOverlays[0].style.display = "none";
-});
-
-crosses[1].addEventListener("click", () => {
-  popupOverlays[1].style.display = "none";
-});
+for (let i = 0; i < crosses.length; i++) {
+  crosses[i].addEventListener("click", () => {
+    popupOverlays[i].style.display = "none";
+  });
+}
 
 addForm.addEventListener("submit", (e) => {
   if (addForm.checkValidity()) {
-    var visitors = JSON.parse(localStorage.getItem("visitors"));
-    var visitor = visitors[addForm.visitor.value];
     var book = giveBookOut(addForm.book.value);
+    cards.push( new Card(addForm.visitor.value, book.id) );
 
-    addCard( new Card(visitor.fullName, book.name, addForm.borrow.value) );
+    localStorage.setItem("cards", JSON.stringify(cards));
+    reloadTable();
     popupOverlays[0].style.display = "none";
   }
   e.preventDefault();
