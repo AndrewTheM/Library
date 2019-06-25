@@ -24,10 +24,22 @@
 				<div class="cross">+</div>
 				<h2>New Card</h2>
 				<form name="add">
-					<input type="text" name="visitor" placeholder="Visitor" required>
-					<input type="text" name="book" placeholder="Book" required>
-					<input type="date" name="borrow" placeholder="Borrow Date" required>
-					<button type="submit" id="save-btn">Save</button>
+					<select name="visitor" required></select>
+					<select name="book" required></select>
+					<input type="date" name="borrow" required>
+					<button type="submit">Add</button>
+				</form>
+			</div>
+		</div>
+		<div class="popup-overlay">
+			<div class="popup">
+				<div class="cross">+</div>
+				<h2>Edit Card</h2>
+				<form name="edit">
+					<select name="visitor" required></select>
+					<select name="book" required></select>
+					<input type="date" name="borrow" required>
+					<button type="submit">Save</button>
 				</form>
 			</div>
 		</div>
@@ -41,7 +53,6 @@
 					<th>Borrow Date</th>
 					<th>Return Date</th>
 					<th>Edit</th>
-					<th>Delete</th>
 				</tr>
 			</thead>
 			<tbody id="table-body"></tbody>

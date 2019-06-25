@@ -72,7 +72,7 @@ main {
 	color: gray;
 }
 
-form input {
+form input, form select {
 	width: 80%;
 	display: block;
 	margin: 15px auto;
@@ -91,4 +91,12 @@ hr {
 table {
 	width: 100%;
 	text-align: center;
+	table-layout: fixed;
+	word-wrap: break-word;
+}
+
+.table-btn {
+	width: 20px;
+	height: 20px;
+	margin-top: 3px;
 }

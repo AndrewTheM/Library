@@ -26,6 +26,8 @@ function reloadTable() {
         newCell = newRow.insertCell(index++);
         newCell.innerHTML = visitor[prop];
       }
+      newCell = newRow.insertCell(index++);
+      newCell.innerHTML = "<input class=\"table-btn\" type=\"image\" src=\"media/edit.png\" alt=\"Edit\">";
   });
 }
 
@@ -40,23 +42,29 @@ Visitor.counter = localStorage.getItem("visitorCounter");
 reloadTable();
 
 var addButton = document.getElementById("add-btn");
-var saveButton = document.getElementById("save-btn");
 var cross = document.querySelector(".cross");
-var popupOverlay = document.getElementsByClassName("popup-overlay")[0];
+var popupOverlays = document.getElementsByClassName("popup-overlay");
 var addForm = document.add;
 
 addButton.addEventListener("click", () => {
-  popupOverlay.style.display = "flex";
+  popupOverlays[0].style.display = "flex";
 });
 
 cross.addEventListener("click", () => {
-  popupOverlay.style.display = "none";
+  popupOverlays[0].style.display = "none";
+});
+
+addForm.phone.addEventListener("keypress", (e) => {
+  if ((e.keyCode < 48 || e.keyCode > 57) && e.keyCode != 32 && e.keyCode != 45) {
+      e.preventDefault();
+  }
 });
 
 addForm.addEventListener("submit", (e) => {
-  if (!addForm.checkValidity()) e.preventDefault();
+  if (addForm.checkValidity()) {
   addVisitor( new Visitor(addForm.name.value, addForm.phone.value) );
-  popupOverlay.style.display = "none";
+  popupOverlays[0].style.display = "none";
+  }
   e.preventDefault();
 });
 
