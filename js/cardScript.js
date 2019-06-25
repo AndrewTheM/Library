@@ -87,16 +87,21 @@ reloadTable();
 fillOptions();
 
 var addButton = document.getElementById("add-btn");
-var cross = document.querySelector(".cross");
-var popupOverlay = document.querySelector(".popup-overlay");
+var crosses = document.getElementsByClassName("cross");
+var popupOverlays = document.getElementsByClassName("popup-overlay");
 var addForm = document.add;
 
 addButton.addEventListener("click", () => {
-  popupOverlay.style.display = "flex";
+  popupOverlays[0].style.display = "flex";
+  popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-cross.addEventListener("click", () => {
-  popupOverlay.style.display = "none";
+crosses[0].addEventListener("click", () => {
+  popupOverlays[0].style.display = "none";
+});
+
+crosses[1].addEventListener("click", () => {
+  popupOverlays[1].style.display = "none";
 });
 
 addForm.addEventListener("submit", (e) => {
@@ -106,7 +111,7 @@ addForm.addEventListener("submit", (e) => {
     var book = giveBookOut(addForm.book.value);
 
     addCard( new Card(visitor.fullName, book.name, addForm.borrow.value) );
-    popupOverlay.style.display = "none";
+    popupOverlays[0].style.display = "none";
   }
   e.preventDefault();
 });

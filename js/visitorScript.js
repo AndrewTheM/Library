@@ -7,6 +7,8 @@ class Visitor {
   }
 }
 
+
+
 function reloadTable() {
   var newRow, newCell, index;
   var tableBody = document.getElementById("table-body");
@@ -37,21 +39,28 @@ function addVisitor(visitor) {
   reloadTable();
 }
 
+
+
 var visitors = [];
 Visitor.counter = localStorage.getItem("visitorCounter");
 reloadTable();
 
 var addButton = document.getElementById("add-btn");
-var cross = document.querySelector(".cross");
+var crosses = document.getElementsByClassName("cross");
 var popupOverlays = document.getElementsByClassName("popup-overlay");
 var addForm = document.add;
 
 addButton.addEventListener("click", () => {
   popupOverlays[0].style.display = "flex";
+  popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-cross.addEventListener("click", () => {
+crosses[0].addEventListener("click", () => {
   popupOverlays[0].style.display = "none";
+});
+
+crosses[1].addEventListener("click", () => {
+  popupOverlays[1].style.display = "none";
 });
 
 addForm.phone.addEventListener("keypress", (e) => {

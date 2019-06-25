@@ -11,6 +11,8 @@ class Book {
   }
 }
 
+
+
 function reloadTable() {
   var newRow, newCell, index;
   var newTableBody = document.createElement("tbody");
@@ -42,21 +44,28 @@ function addBook(book) {
   reloadTable();
 }
 
+
+
 var books = [];
 Book.counter = localStorage.getItem("bookCounter") || 1;
 reloadTable();
 
 var addButton = document.getElementById("add-btn");
-var cross = document.querySelector(".cross");
-var popupOverlay = document.getElementsByClassName("popup-overlay")[0];
+var crosses = document.getElementsByClassName("cross");
+var popupOverlays = document.getElementsByClassName("popup-overlay");
 var addForm = document.add;
 
 addButton.addEventListener("click", () => {
-  popupOverlay.style.display = "flex";
+  popupOverlays[0].style.display = "flex";
+  popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-cross.addEventListener("click", () => {
-  popupOverlay.style.display = "none";
+crosses[0].addEventListener("click", () => {
+  popupOverlays[0].style.display = "none";
+});
+
+crosses[1].addEventListener("click", () => {
+  popupOverlays[1].style.display = "none";
 });
 
 addForm.addEventListener("submit", (e) => {
@@ -64,7 +73,7 @@ addForm.addEventListener("submit", (e) => {
     addBook( new Book(addForm.name.value, addForm.author.value,
                         addForm.year.value, addForm.publisher.value,
                         addForm.pages.value, addForm.copies.value) );
-    popupOverlay.style.display = "none";
+    popupOverlays[0].style.display = "none";
   }
   e.preventDefault();
 });
