@@ -18,6 +18,7 @@
 		</nav>
 	</header>
 	<main>
+		<span class="text-all">ALL VISITORS:</span>
 		<button id="add-btn">New visitor</button>
 		<div class="popup-overlay">
 			<div class="popup">
@@ -25,7 +26,7 @@
 				<h2>New Visitor</h2>
 				<form name="add" method="post">
 					<input type="text" name="name" placeholder="Full Name" required>
-					<input type="tel" name="phone" placeholder="Phone" required>
+					<input type="tel" name="phone" autocomplete="off" placeholder="Phone" required>
 					<button type="submit">Add</button>
 				</form>
 			</div>
@@ -36,7 +37,7 @@
 				<h2>Edit Visitor</h2>
 				<form name="edit">
 					<input type="text" name="name" placeholder="Full Name" required>
-					<input type="tel" name="phone" placeholder="Phone" required>
+					<input type="tel" name="phone" autocomplete="off" placeholder="Phone" required>
 					<button type="submit">Save</button>
 				</form>
 			</div>

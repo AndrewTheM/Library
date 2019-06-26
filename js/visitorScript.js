@@ -1,6 +1,6 @@
 class Visitor {
   constructor(fullName, phone) {
-    this.id = Visitor.counter++;
+    this.id = ++Visitor.counter;
     this.fullName = fullName || "";
     this.phone = phone || "";
   }
@@ -25,7 +25,7 @@ function reloadTable() {
         newCell.innerHTML = visitor[prop];
       }
     }
-    
+
     newCell = newRow.insertCell(index++);
     newCell.innerHTML = `<input class="table-btn" onclick="showEditForm(${len})" ` +
                                `type="image" src="media/edit.png" alt="Edit">`;
@@ -60,7 +60,7 @@ function showEditForm(index) {
 
 
 var visitors = [];
-Visitor.counter = localStorage.getItem("visitorCounter") || 1;
+Visitor.counter = localStorage.getItem("visitorCounter") || 0;
 reloadTable();
 
 var addButton = document.getElementById("add-btn");
@@ -87,12 +87,11 @@ addForm.phone.addEventListener("keypress", (e) => {
 
 addForm.addEventListener("submit", (e) => {
   if (addForm.checkValidity()) {
-  visitors.push( new Visitor(addForm.name.value, addForm.phone.value) );
-
-  localStorage.setItem("visitors", JSON.stringify(visitors));
-  reloadTable();
-  popupOverlays[0].style.display = "none";
-  addForm.clear();
+    visitors.push( new Visitor(addForm.name.value, addForm.phone.value) );
+    localStorage.setItem("visitors", JSON.stringify(visitors));
+    reloadTable();
+    popupOverlays[0].style.display = "none";
+    addForm.clear();
   }
   e.preventDefault();
 });

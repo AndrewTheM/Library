@@ -1,7 +1,7 @@
 class Book {
   constructor(name, authorName, yearOfPublish,
               publisherName, pagesNumber, copiesLeft) {
-    this.id = Book.counter++;
+    this.id = ++Book.counter;
     this.name = name || "";
     this.authorName = authorName || "";
     this.yearOfPublish = yearOfPublish || new Date().getFullYear();
@@ -34,7 +34,7 @@ function reloadTable() {
     newCell = newRow.insertCell(index++);
     newCell.innerHTML = `<input class="table-btn" onclick="showEditForm(${len})" ` +
                                `type="image" src="media/edit.png" alt="Edit">`;
-                               
+
     newCell = newRow.insertCell(index++);
     newCell.innerHTML = `<input class="table-btn" onclick="deleteFromIndex(${len})"` +
                                `type="image" src="media/delete.png" alt="Delete">`;
@@ -87,11 +87,10 @@ function deleteFromIndex(index) {
 
 
 var books = [];
-Book.counter = localStorage.getItem("bookCounter") || 1;
+Book.counter = localStorage.getItem("bookCounter") || 0;
 reloadTable();
 
 var addButton = document.getElementById("add-btn");
-var reassignButton = document.getElementById("reassign-btn")
 var popupOverlays = document.getElementsByClassName("popup-overlay");
 var crosses = document.getElementsByClassName("cross");
 var addForm = document.add;
@@ -99,17 +98,6 @@ var addForm = document.add;
 addButton.addEventListener("click", () => {
   popupOverlays[0].style.display = "flex";
   popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
-});
-
-reassignButton.addEventListener("click", () => {
-  var confirmed = confirm("Warning!\nYou are about to reassign books' IDs in order " +
-                          "starting with 1.\nYou won't be able to undo this action.");
-  if (confirmed) {
-    for (var i = 0; i < books.length; i++)
-      books[i].id = i + 1;
-    Book.counter = ++i;
-    saveData();
-  }
 });
 
 for (let i = 0; i < crosses.length; i++) {
@@ -123,7 +111,6 @@ addForm.addEventListener("submit", (e) => {
     books.push( new Book(addForm.name.value, addForm.author.value,
                         addForm.year.value, addForm.publisher.value,
                         addForm.pages.value, addForm.copies.value) );
-
     saveData();
     popupOverlays[0].style.display = "none";
     addForm.clear();

@@ -18,26 +18,16 @@
 		</nav>
 	</header>
 	<main>
+		<span class="text-all">ALL CARDS:</span>
 		<button id="add-btn">New card</button>
 		<div class="popup-overlay">
 			<div class="popup">
 				<div class="cross">+</div>
 				<h2>New Card</h2>
-				<form name="add">
+				<form name="add" method="post">
 					<select name="visitor" required></select>
 					<select name="book" required></select>
 					<button type="submit">Add</button>
-				</form>
-			</div>
-		</div>
-		<div class="popup-overlay">
-			<div class="popup">
-				<div class="cross">+</div>
-				<h2>Edit Card</h2>
-				<form name="edit">
-					<select name="visitor" required>
-					<select name="book" required>
-					<button type="submit">Save</button>
 				</form>
 			</div>
 		</div>
@@ -50,7 +40,6 @@
 					<th>Book</th>
 					<th>Borrow Date</th>
 					<th>Return Date</th>
-					<th>Edit</th>
 				</tr>
 			</thead>
 			<tbody id="table-body"></tbody>
