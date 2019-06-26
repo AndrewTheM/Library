@@ -9,9 +9,9 @@ class Card {
 
   static stringifyDate(date = new Date()) {
     var month = date.getMonth() + 1;
-    return `${date.getFullYear()}-` +
-           `${(month < 10 ? "0" + month : month)}-` +
-           `${date.getDate()}`;
+    return `${date.getDate()}.` +
+           `${(month < 10 ? "0" + month : month)}.` +
+           `${date.getFullYear()}`;
   }
 }
 
@@ -114,6 +114,7 @@ addButton.addEventListener("click", () => {
 
 cross.addEventListener("click", () => {
   popupOverlay.style.display = "none";
+  addForm.reset();
 });
 
 addForm.addEventListener("submit", (e) => {
@@ -124,7 +125,7 @@ addForm.addEventListener("submit", (e) => {
     localStorage.setItem("cards", JSON.stringify(cards));
     reloadTable();
     popupOverlay.style.display = "none";
-    addForm.clear();
+    addForm.reset();
   }
   e.preventDefault();
 });
