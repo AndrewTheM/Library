@@ -1,10 +1,10 @@
 class Book {
-  constructor(name, authorName, yearOfPublish,
+  constructor(name, authorName, publicationYear,
               publisherName, pagesNumber, copiesLeft) {
     this.id = ++Book.counter;
     this.name = name || "";
     this.authorName = authorName || "";
-    this.yearOfPublish = yearOfPublish || new Date().getFullYear();
+    this.publicationYear = publicationYear || new Date().getFullYear();
     this.publisherName = publisherName || "";
     this.pagesNumber = pagesNumber || 100;
     this.copiesLeft = copiesLeft || 1;
@@ -55,7 +55,7 @@ function showEditForm(index) {
 
   editForm.name.value = books[index].name;
   editForm.author.value = books[index].authorName;
-  editForm.year.value = books[index].yearOfPublish;
+  editForm.year.value = books[index].publicationYear;
   editForm.publisher.value = books[index].publisherName;
   editForm.pages.value = books[index].pagesNumber;
   editForm.copies.value = books[index].copiesLeft;
@@ -67,7 +67,7 @@ function showEditForm(index) {
     if (editForm.checkValidity()) {
       books[index].name = editForm.name.value;
       books[index].authorName = editForm.author.value;
-      books[index].yearOfPublish = editForm.year.value;
+      books[index].publicationYear = editForm.year.value;
       books[index].publisherName = editForm.publisher.value;
       books[index].pagesNumber = editForm.pages.value;
       books[index].copiesLeft = editForm.copies.value;
@@ -103,6 +103,7 @@ addButton.addEventListener("click", () => {
 for (let i = 0; i < crosses.length; i++) {
   crosses[i].addEventListener("click", () => {
     popupOverlays[i].style.display = "none";
+    addForm.reset();
   });
 }
 
@@ -113,7 +114,7 @@ addForm.addEventListener("submit", (e) => {
                         addForm.pages.value, addForm.copies.value) );
     saveData();
     popupOverlays[0].style.display = "none";
-    addForm.clear();
+    addForm.reset();
   }
   e.preventDefault();
 });

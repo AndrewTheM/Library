@@ -76,6 +76,7 @@ addButton.addEventListener("click", () => {
 for (let i = 0; i < crosses.length; i++) {
   crosses[i].addEventListener("click", () => {
     popupOverlays[i].style.display = "none";
+    addForm.reset();
   });
 }
 
@@ -91,7 +92,7 @@ addForm.addEventListener("submit", (e) => {
     localStorage.setItem("visitors", JSON.stringify(visitors));
     reloadTable();
     popupOverlays[0].style.display = "none";
-    addForm.clear();
+    addForm.reset();
   }
   e.preventDefault();
 });
