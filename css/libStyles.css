@@ -46,6 +46,7 @@ main {
 	display: none;
 	justify-content: center;
 	align-items: center;
+	z-index: 1;
 }
 
 .popup {
@@ -85,7 +86,7 @@ form button {
 }
 
 hr {
-	margin: 25px 0;
+	margin: 25px 0 15px;
 }
 
 table {
@@ -113,4 +114,25 @@ table {
 	top: 4px;
 	color: #009eaa;
 	font-weight: bold;
+}
+
+#table-manipulation {
+	display: flex;
+	margin-bottom: 30px;
+}
+
+#search {
+	position: absolute;
+	right: 20px;
+}
+
+#sort-field, #search-field {
+	margin: 5px;
+	font-size: 14px;
+	width: 130px;
+}
+
+#sort-btn, #search-btn {
+	font-size: 14px;
+	width: 80px;
 }

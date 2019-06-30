@@ -13,12 +13,12 @@ class Book {
 
 
 
-function reloadTable() {
+function fillTable(list) {
   var newRow, newCell, len, index;
   var newTableBody = document.createElement("tbody");
   newTableBody.setAttribute("id", "table-body");
 
-  books = JSON.parse(localStorage.getItem("books")) || [];
+  books = list || JSON.parse(localStorage.getItem("books")) || [];
   books.forEach((book) => {
     len = newTableBody.rows.length;
     newRow = newTableBody.insertRow(len);
@@ -36,7 +36,7 @@ function reloadTable() {
                                `type="image" src="media/edit.png" alt="Edit">`;
 
     newCell = newRow.insertCell(index++);
-    newCell.innerHTML = `<input class="table-btn" onclick="deleteFromIndex(${len})"` +
+    newCell.innerHTML = `<input class="table-btn" onclick="deleteFromBooks(${len})"` +
                                `type="image" src="media/delete.png" alt="Delete">`;
   });
 
@@ -47,7 +47,7 @@ function reloadTable() {
 
 function saveData() {
   localStorage.setItem("books", JSON.stringify(books));
-  reloadTable();
+  fillTable();
 }
 
 function showEditForm(index) {
@@ -63,7 +63,7 @@ function showEditForm(index) {
   popupOverlays[1].style.display = "flex";
   popupOverlays[1].style.height = `${document.documentElement.scrollHeight}px`;
 
-  editForm.onsubmit = function() {
+  editForm.onsubmit = function(e) {
     if (editForm.checkValidity()) {
       books[index].name = editForm.name.value;
       books[index].authorName = editForm.author.value;
@@ -79,18 +79,26 @@ function showEditForm(index) {
   };
 }
 
-function deleteFromIndex(index) {
+function deleteFromBooks(index) {
   books.splice(index, 1);
   saveData();
+}
+
+function sortBooks(propName) {
+  var sortedBooks = JSON.parse( JSON.stringify(books) );
+  sortedBooks.sort((x, y) => x[propName] > y[propName] ? 1 : -1);
+  return sortedBooks;
 }
 
 
 
 var books = [];
 Book.counter = localStorage.getItem("bookCounter") || 0;
-reloadTable();
+fillTable();
 
 var addButton = document.getElementById("add-btn");
+var sortButton = document.getElementById("sort-btn");
+var sortField = document.getElementById("sort-field");
 var popupOverlays = document.getElementsByClassName("popup-overlay");
 var crosses = document.getElementsByClassName("cross");
 var addForm = document.add;
@@ -110,8 +118,8 @@ for (let i = 0; i < crosses.length; i++) {
 addForm.addEventListener("submit", (e) => {
   if (addForm.checkValidity()) {
     books.push( new Book(addForm.name.value, addForm.author.value,
-                        addForm.year.value, addForm.publisher.value,
-                        addForm.pages.value, addForm.copies.value) );
+                         +addForm.year.value, addForm.publisher.value,
+                         +addForm.pages.value, +addForm.copies.value) );
     saveData();
     popupOverlays[0].style.display = "none";
     addForm.reset();
@@ -119,6 +127,11 @@ addForm.addEventListener("submit", (e) => {
   e.preventDefault();
 });
 
+sortButton.addEventListener("click", () => {
+  fillTable( sortBooks(sortField.value) );
+});
+
 window.addEventListener("unload", () => {
+  localStorage.setItem("books", JSON.stringify( sortBooks("id") ));
   localStorage.setItem("bookCounter", Book.counter);
 });

@@ -8,12 +8,12 @@ class Visitor {
 
 
 
-function reloadTable() {
+function fillTable(list) {
   var newRow, newCell, len, index;
   var newTableBody = document.createElement("tbody");
   newTableBody.setAttribute("id", "table-body");
 
-  visitors = JSON.parse(localStorage.getItem("visitors")) || [];
+  visitors = list || JSON.parse(localStorage.getItem("visitors")) || [];
   visitors.forEach((visitor) => {
     len = newTableBody.rows.length;
     newRow = newTableBody.insertRow(len);
@@ -44,26 +44,36 @@ function showEditForm(index) {
   popupOverlays[1].style.display = "flex";
   popupOverlays[1].style.height = `${document.documentElement.scrollHeight}px`;
 
-  editForm.onsubmit = function() {
+  editForm.onsubmit = function(e) {
     if (editForm.checkValidity()) {
       visitors[index].fullName = editForm.name.value;
       visitors[index].phone = editForm.phone.value;
 
       localStorage.setItem("visitors", JSON.stringify(visitors));
-      reloadTable();
+      fillTable();
       popupOverlays[1].style.display = "none";
     }
     e.preventDefault();
   };
 }
 
+function sortVisitors(propName) {
+  var sortedVisitors = JSON.parse( JSON.stringify(visitors) );
+  sortedVisitors.sort((x, y) => x[propName] > y[propName] ? 1 : -1);
+  return sortedVisitors;
+}
+
 
 
 var visitors = [];
 Visitor.counter = localStorage.getItem("visitorCounter") || 0;
-reloadTable();
+fillTable();
 
 var addButton = document.getElementById("add-btn");
+var sortButton = document.getElementById("sort-btn");
+var sortField = document.getElementById("sort-field");
+var searchButton = document.getElementById("search-btn");
+var searchField = document.getElementById("search-field");
 var popupOverlays = document.getElementsByClassName("popup-overlay");
 var crosses = document.getElementsByClassName("cross");
 var addForm = document.add;
@@ -89,14 +99,38 @@ addForm.phone.addEventListener("keypress", (e) => {
 addForm.addEventListener("submit", (e) => {
   if (addForm.checkValidity()) {
     visitors.push( new Visitor(addForm.name.value, addForm.phone.value) );
+
     localStorage.setItem("visitors", JSON.stringify(visitors));
-    reloadTable();
+    fillTable();
     popupOverlays[0].style.display = "none";
     addForm.reset();
   }
   e.preventDefault();
 });
 
+sortButton.addEventListener("click", () => {
+  fillTable( sortVisitors(sortField.value) );
+});
+
+searchButton.addEventListener("click", () => {
+  var filteredVisitors = JSON.parse( JSON.stringify(visitors) );
+  var foundIndex;
+
+  for (var i = 0; i < filteredVisitors.length; i++) {
+    foundIndex = filteredVisitors[i].fullName.indexOf(searchField.value);
+    if (foundIndex < 0) {
+      filteredVisitors.splice(i, 1);
+      continue;
+    }
+
+    foundIndex = filteredVisitors[i].phone.indexOf(searchField.value);
+    if (foundIndex < 0) filteredVisitors.splice(i, 1);
+  }
+
+  fillTable(filteredVisitors);
+});
+
 window.addEventListener("unload", () => {
+  localStorage.setItem("visitors", JSON.stringify( sortVisitors("id") ));
   localStorage.setItem("visitorCounter", Visitor.counter);
 });
