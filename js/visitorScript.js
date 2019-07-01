@@ -28,7 +28,7 @@ function fillTable(list) {
     }
 
     newCell = newRow.insertCell(index++);
-    newCell.innerHTML = `<input class="table-btn" onclick="showEditForm(${len})" ` +
+    newCell.innerHTML = `<input class="table-btn" onclick="showEditForm(${visitor.id})" ` +
                                `type="image" src="media/edit.png" alt="Edit">`;
   });
 
@@ -88,7 +88,7 @@ addButton.addEventListener("click", () => {
   popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-for (var i = 0; i < crosses.length; i++) {
+for (let i = 0; i < crosses.length; i++) {
   crosses[i].addEventListener("click", () => {
     popupOverlays[i].style.display = "none";
     addForm.reset();
@@ -120,7 +120,7 @@ sortButton.addEventListener("click", () => {
 searchButton.addEventListener("click", () => {
   var filteredVisitors = [], visitorCopy, foundIndex;
 
-  visitors.forEach((visitor) => {
+  for (var visitor of visitors) {
     visitorCopy = Object.assign({}, visitor);
 
     foundIndex = visitorCopy.fullName.indexOf(searchField.value);
@@ -131,7 +131,7 @@ searchButton.addEventListener("click", () => {
 
     foundIndex = visitorCopy.phone.indexOf(searchField.value);
     if (foundIndex >= 0) filteredVisitors.push(visitorCopy);
-  });
+  }
 
   fillTable(filteredVisitors);
 });

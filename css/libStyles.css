@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	font-family: Arial;
-	background-color: #f6f6f6;
+	background-color: whitesmoke;
 }
 
 header h1 {
@@ -93,6 +93,8 @@ table {
 	text-align: center;
 	table-layout: fixed;
 	word-wrap: break-word;
+	font-size: 17px;
+	background-color: whitesmoke;
 }
 
 .data-table {
@@ -138,9 +140,15 @@ table {
 
 #stat-wrap {
 	display: flex;
-	justify-content: space-around;
+	justify-content: center;
 }
 
 .stat-table {
-	width: 30%;
+	width: 700px;
+	font-size: 17px;
+	margin: 30px;
+}
+
+.stat-table th {
+	font-size: 19px;
 }

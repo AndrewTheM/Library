@@ -119,7 +119,7 @@ addButton.addEventListener("click", () => {
   popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-for (var i = 0 ; i < crosses.length; i++) {
+for (let i = 0 ; i < crosses.length; i++) {
   crosses[i].addEventListener("click", () => {
     popupOverlays[i].style.display = "none";
     addForm.reset();

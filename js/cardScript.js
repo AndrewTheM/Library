@@ -62,7 +62,13 @@ function fillOptions() {
   var addForm = document.add;
   books = JSON.parse(localStorage.getItem("books")) || [];
 
-  for (var index in addForm.book.options) addForm.book.remove(index);
+  for (var i = 0; i < addForm.book.options.length; i++) {
+    addForm.book.remove(i);
+  }
+
+  for (var i = 0; i < addForm.visitor.options.length; i++) {
+    addForm.visitor.remove(i);
+  }
 
   visitors.forEach((visitor) => {
     addForm.visitor.add( new Option(visitor.fullName, visitor.id));

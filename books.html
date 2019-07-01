@@ -8,81 +8,83 @@
 	<title>Library</title>
 </head>
 <body>
-	<header>
-		<h1>LIBRARY</h1>
-		<nav>
-			<a class="active-tab" href="books.html">BOOKS</a>
-			<a href="visitors.html">VISITORS</a>
-			<a href="cards.html">CARDS</a>
-			<a href="statistics.html">STATISTICS</a>
-		</nav>
-	</header>
-	<main>
-		<span class="text-all">ALL BOOKS:</span>
-		<button id="add-btn">New book</button>
-		<div class="popup-overlay">
-			<div class="popup">
-				<div class="cross">+</div>
-				<h2>New Book</h2>
-				<form name="add" method="post">
-					<input type="text" name="name" placeholder="Name" required>
-					<input type="text" name="author" placeholder="Author" required>
-					<input type="number" min="0" name="year" placeholder="Publication Year" required>
-					<input type="text" name="publisher" placeholder="Publisher" required>
-					<input type="number" min="1" name="pages" placeholder="Pages Number" required>
-					<input type="number" min="1" name="copies" placeholder="Copies Number" required>
-					<button type="submit">Add</button>
-				</form>
+	<div id="wrapper">
+		<header>
+			<h1>LIBRARY</h1>
+			<nav>
+				<a class="active-tab" href="books.html">BOOKS</a>
+				<a href="visitors.html">VISITORS</a>
+				<a href="cards.html">CARDS</a>
+				<a href="statistics.html">STATISTICS</a>
+			</nav>
+		</header>
+		<main>
+			<span class="text-all">ALL BOOKS:</span>
+			<button id="add-btn">New book</button>
+			<div class="popup-overlay">
+				<div class="popup">
+					<div class="cross">+</div>
+					<h2>New Book</h2>
+					<form name="add" method="post">
+						<input type="text" name="name" placeholder="Name" required>
+						<input type="text" name="author" placeholder="Author" required>
+						<input type="number" min="0" name="year" placeholder="Publication Year" required>
+						<input type="text" name="publisher" placeholder="Publisher" required>
+						<input type="number" min="1" name="pages" placeholder="Pages Number" required>
+						<input type="number" min="1" name="copies" placeholder="Copies Number" required>
+						<button type="submit">Add</button>
+					</form>
+				</div>
 			</div>
-		</div>
-		<div class="popup-overlay">
-			<div class="popup">
-				<div class="cross">+</div>
-				<h2>Edit Book</h2>
-				<form name="edit" method="post">
-					<input type="text" name="name" placeholder="Name" required>
-					<input type="text" name="author" placeholder="Author" required>
-					<input type="number" min="0" name="year" placeholder="Publication Year" required>
-					<input type="text" name="publisher" placeholder="Publisher" required>
-					<input type="number" min="1" name="pages" placeholder="Pages Number" required>
-					<input type="number" min="1" name="copies" placeholder="Copies Number" required>
-					<button type="submit">Save</button>
-				</form>
+			<div class="popup-overlay">
+				<div class="popup">
+					<div class="cross">+</div>
+					<h2>Edit Book</h2>
+					<form name="edit" method="post">
+						<input type="text" name="name" placeholder="Name" required>
+						<input type="text" name="author" placeholder="Author" required>
+						<input type="number" min="0" name="year" placeholder="Publication Year" required>
+						<input type="text" name="publisher" placeholder="Publisher" required>
+						<input type="number" min="1" name="pages" placeholder="Pages Number" required>
+						<input type="number" min="1" name="copies" placeholder="Copies Number" required>
+						<button type="submit">Save</button>
+					</form>
+				</div>
 			</div>
-		</div>
-		<hr>
-		<div id="table-manipulation">
-			<div>
-				<label>Sort by:</label>
-				<select id="sort-field">
-					<option value="name">Name</option>
-					<option value="authorName">Author</option>
-					<option value="copiesLeft">Copies</option>
-				</select>
-				<button id="sort-btn">Sort</button>
+			<hr>
+			<div id="table-manipulation">
+				<div>
+					<label>Sort by:</label>
+					<select id="sort-field">
+						<option value="name">Name</option>
+						<option value="authorName">Author</option>
+						<option value="copiesLeft">Copies</option>
+					</select>
+					<button id="sort-btn">Sort</button>
+				</div>
+				<div>
+					<label>Search:</label>
+					<input id="search-field" type="text">
+					<button id="search-btn">Search</button>
+				</div>
 			</div>
-			<div>
-				<label>Search:</label>
-				<input id="search-field" type="text">
-				<button id="search-btn">Search</button>
-			</div>
-		</div>
-		<table class="data-table" border="1" cellspacing="0" cellpadding="5">
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Author</th>
-					<th>Publication Year</th>
-					<th>Publisher</th>
-					<th>Pages</th>
-					<th>Copies Left</th>
-					<th>Edit</th>
-					<th>Delete</th>
-				</tr>
-			</thead>
-			<tbody id="table-body"></tbody>
-		</table>
-	</main>
+			<table class="data-table" border="1" cellspacing="0" cellpadding="5">
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>Name</th>
+						<th>Author</th>
+						<th>Publication Year</th>
+						<th>Publisher</th>
+						<th>Pages</th>
+						<th>Copies Left</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody id="table-body"></tbody>
+			</table>
+		</main>
+	</div>
 </body>
 </html>
