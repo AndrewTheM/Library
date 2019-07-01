@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/libStyles.css">
-	<script src="js/statScript.js"></script>
+	<script async src="js/statScript.js"></script>
 	<title>Library</title>
 </head>
 <body>
@@ -18,7 +18,20 @@
 		</nav>
 	</header>
 	<main>
-
+		<div id="stat-wrap">
+			<table class="stat-table" border="1" cellspacing="0" cellpadding="5">
+				<thead>
+					<th colspan="2">Top 5 Most Popular Books</th>
+				</thead>
+				<tbody id="books-body"></tbody>
+			</table>
+			<table class="stat-table" border="1" cellspacing="0" cellpadding="5">
+				<thead>
+					<th colspan="2">Top 5 Most Active Visitors</th>
+				</thead>
+				<tbody id="visitors-body"></tbody>
+			</table>
+		</div>
 	</main>
 </body>
 </html>

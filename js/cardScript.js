@@ -17,8 +17,8 @@ class Card {
 
 
 
-function reloadTable() {
-  var newRow, newCell, len, book;
+function fillTable() {
+  var newRow, newCell, book, visitor;
   var newTableBody = document.createElement("tbody");
   newTableBody.setAttribute("id", "table-body");
 
@@ -27,16 +27,16 @@ function reloadTable() {
   books = JSON.parse(localStorage.getItem("books")) || [];
 
   cards.forEach((card) => {
-    len = newTableBody.rows.length;
     book = books.filter((book) => book.id == card.bookId)[0];
-    if (typeof book !== "undefined") {
-      newRow = newTableBody.insertRow(len);
+    visitor = visitors.filter((visitor) => visitor.id == card.visitorId)[0];
+    if (book && visitor) {
+      newRow = newTableBody.insertRow(newTableBody.rows.length);
 
       newCell = newRow.insertCell(0);
       newCell.innerHTML = card.id;
 
       newCell = newRow.insertCell(1);
-      newCell.innerHTML = visitors[card.visitorId - 1].fullName;
+      newCell.innerHTML = visitor.fullName;
 
       newCell = newRow.insertCell(2);
       newCell.innerHTML = book.name;
@@ -46,7 +46,7 @@ function reloadTable() {
 
       newCell = newRow.insertCell(4);
       if (card.returnDate === null) {
-        newCell.innerHTML = `<input class="table-btn" onclick="returnBook(${len})" ` +
+        newCell.innerHTML = `<input class="table-btn" onclick="returnBook(${card.id})" ` +
                                    `type="image" src="media/return.png" alt="Return">`;
       } else {
         newCell.innerHTML = card.returnDate;
@@ -60,21 +60,17 @@ function reloadTable() {
 
 function fillOptions() {
   var addForm = document.add;
-
   books = JSON.parse(localStorage.getItem("books")) || [];
 
-  for (var i = 0; i < addForm.book.options.length; i++) {
-    addForm.book.remove(i);
-  }
+  for (var index in addForm.book.options) addForm.book.remove(index);
 
-  for (var i = 0; i < visitors.length; i++) {
-    addForm.visitor.add( new Option(visitors[i].fullName, visitors[i].id) );
-  }
+  visitors.forEach((visitor) => {
+    addForm.visitor.add( new Option(visitor.fullName, visitor.id));
+  });
 
-  for (var i = 0; i < books.length; i++)
-    if (books[i].copiesLeft > 0) {
-      addForm.book.add( new Option(books[i].name, books[i].id) );
-    }
+  books.forEach((book) => {
+    if (book.copiesLeft > 0) addForm.book.add( new Option(book.name, book.id) );
+  });
 }
 
 function giveBookOut(id) {
@@ -85,21 +81,21 @@ function giveBookOut(id) {
   return book;
 }
 
-function returnBook(index) {
-  var card = cards[index];
+function returnBook(id) {
+  var card = cards.filter((card) => card.id == id)[0];
   var book = books.filter((book) => book.id == card.bookId)[0];
   card.returnDate = Card.stringifyDate();
   book.copiesLeft++;
   localStorage.setItem("cards", JSON.stringify(cards));
   localStorage.setItem("books", JSON.stringify(books));
-  reloadTable();
+  fillTable();
 }
 
 
 
-var cards = [], visitors, books;
+var cards, visitors, books;
 Card.counter = localStorage.getItem("cardCounter") || 0;
-reloadTable();
+fillTable();
 fillOptions();
 
 var addButton = document.getElementById("add-btn");
@@ -123,7 +119,7 @@ addForm.addEventListener("submit", (e) => {
     cards.push( new Card(addForm.visitor.value, book.id) );
 
     localStorage.setItem("cards", JSON.stringify(cards));
-    reloadTable();
+    fillTable();
     popupOverlay.style.display = "none";
     addForm.reset();
   }

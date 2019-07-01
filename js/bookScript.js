@@ -119,7 +119,7 @@ addButton.addEventListener("click", () => {
   popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-for (let i = 0; i < crosses.length; i++) {
+for (var i = 0 ; i < crosses.length; i++) {
   crosses[i].addEventListener("click", () => {
     popupOverlays[i].style.display = "none";
     addForm.reset();
@@ -143,35 +143,30 @@ sortButton.addEventListener("click", () => {
 });
 
 searchButton.addEventListener("click", () => {
-  var filteredBooks = [];
-  var book;
-  var foundIndex;
+  var filteredBooks = [], bookCopy, foundIndex;
 
-  fillTable();
+  for (var book of books) {
+    bookCopy = Object.assign({}, book);
 
-  for (var i = 0; i < books.length; i++) {
-    book = Object.assign({}, books[i]);
-
-    foundIndex = book.name.indexOf(searchField.value);
+    foundIndex = bookCopy.name.indexOf(searchField.value);
     if (foundIndex >= 0) {
-      filteredBooks.push(book);
+      filteredBooks.push(bookCopy);
       continue;
     }
 
-    foundIndex = book.authorName.indexOf(searchField.value);
+    foundIndex = bookCopy.authorName.indexOf(searchField.value);
     if (foundIndex >= 0) {
-      filteredBooks.push(book);
+      filteredBooks.push(bookCopy);
       continue;
     }
 
-    foundIndex = book.publisherName.indexOf(searchField.value);
-    if (foundIndex >= 0) filteredBooks.push(book);
+    foundIndex = bookCopy.publisherName.indexOf(searchField.value);
+    if (foundIndex >= 0) filteredBooks.push(bookCopy);
   }
 
   fillTable(filteredBooks);
 });
 
 window.addEventListener("unload", () => {
-  // localStorage.setItem("books", JSON.stringify( sortBooks("id") ));
   localStorage.setItem("bookCounter", Book.counter);
 });

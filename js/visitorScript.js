@@ -88,7 +88,7 @@ addButton.addEventListener("click", () => {
   popupOverlays[0].style.height = `${document.documentElement.scrollHeight}px`;
 });
 
-for (let i = 0; i < crosses.length; i++) {
+for (var i = 0; i < crosses.length; i++) {
   crosses[i].addEventListener("click", () => {
     popupOverlays[i].style.display = "none";
     addForm.reset();
@@ -118,28 +118,24 @@ sortButton.addEventListener("click", () => {
 });
 
 searchButton.addEventListener("click", () => {
-  var filteredVisitors = [];
-  var visitor;
-  var foundIndex;
+  var filteredVisitors = [], visitorCopy, foundIndex;
 
-  for (var i = 0; i < visitors.length; i++) {
-    visitor = Object.assign({}, visitors[i]);
+  visitors.forEach((visitor) => {
+    visitorCopy = Object.assign({}, visitor);
 
-    foundIndex = visitor.fullName.indexOf(searchField.value);
+    foundIndex = visitorCopy.fullName.indexOf(searchField.value);
     if (foundIndex >= 0) {
-      filteredVisitors.push(visitor);
+      filteredVisitors.push(visitorCopy);
       continue;
     }
 
-    foundIndex = visitor.phone.indexOf(searchField.value);
-    if (foundIndex >= 0) filteredVisitors.push(visitor);
-  }
+    foundIndex = visitorCopy.phone.indexOf(searchField.value);
+    if (foundIndex >= 0) filteredVisitors.push(visitorCopy);
+  });
 
   fillTable(filteredVisitors);
 });
 
 window.addEventListener("unload", () => {
-  fillTable();
-  localStorage.setItem("visitors", JSON.stringify( sortVisitors("id") ));
   localStorage.setItem("visitorCounter", Visitor.counter);
 });

@@ -90,10 +90,13 @@ hr {
 }
 
 table {
-	width: 100%;
 	text-align: center;
 	table-layout: fixed;
 	word-wrap: break-word;
+}
+
+.data-table {
+	width: 100%;
 }
 
 .table-btn {
@@ -118,13 +121,8 @@ table {
 
 #table-manipulation {
 	display: flex;
+	justify-content: space-between;
 	margin-bottom: 30px;
-	min-width: 500px;
-}
-
-#search {
-	position: absolute;
-	right: 20px;
 }
 
 #sort-field, #search-field {
@@ -136,4 +134,13 @@ table {
 #sort-btn, #search-btn {
 	font-size: 14px;
 	width: 80px;
+}
+
+#stat-wrap {
+	display: flex;
+	justify-content: space-around;
+}
+
+.stat-table {
+	width: 30%;
 }
