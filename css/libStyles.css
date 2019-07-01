@@ -119,6 +119,7 @@ table {
 #table-manipulation {
 	display: flex;
 	margin-bottom: 30px;
+	min-width: 500px;
 }
 
 #search {

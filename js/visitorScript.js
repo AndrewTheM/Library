@@ -13,8 +13,9 @@ function fillTable(list) {
   var newTableBody = document.createElement("tbody");
   newTableBody.setAttribute("id", "table-body");
 
-  visitors = list || JSON.parse(localStorage.getItem("visitors")) || [];
-  visitors.forEach((visitor) => {
+  visitors = JSON.parse(localStorage.getItem("visitors")) || [];
+
+  (list || visitors).forEach((visitor) => {
     len = newTableBody.rows.length;
     newRow = newTableBody.insertRow(len);
     index = 0;
@@ -35,19 +36,20 @@ function fillTable(list) {
   tableBody.parentNode.replaceChild(newTableBody, tableBody);
 }
 
-function showEditForm(index) {
+function showEditForm(id) {
   var editForm = document.edit;
+  var visitor = visitors.filter((visitor) => visitor.id == id)[0];
 
-  editForm.name.value = visitors[index].fullName;
-  editForm.phone.value = visitors[index].phone;
+  editForm.name.value = visitor.fullName;
+  editForm.phone.value = visitor.phone;
 
   popupOverlays[1].style.display = "flex";
   popupOverlays[1].style.height = `${document.documentElement.scrollHeight}px`;
 
   editForm.onsubmit = function(e) {
     if (editForm.checkValidity()) {
-      visitors[index].fullName = editForm.name.value;
-      visitors[index].phone = editForm.phone.value;
+      visitor.fullName = editForm.name.value;
+      visitor.phone = editForm.phone.value;
 
       localStorage.setItem("visitors", JSON.stringify(visitors));
       fillTable();
@@ -59,7 +61,10 @@ function showEditForm(index) {
 
 function sortVisitors(propName) {
   var sortedVisitors = JSON.parse( JSON.stringify(visitors) );
-  sortedVisitors.sort((x, y) => x[propName] > y[propName] ? 1 : -1);
+  sortedVisitors.sort((x, y) => {
+    if (x[propName] == y[propName]) return 0;
+    return x[propName] > y[propName] ? 1 : -1;
+  });
   return sortedVisitors;
 }
 
@@ -113,24 +118,28 @@ sortButton.addEventListener("click", () => {
 });
 
 searchButton.addEventListener("click", () => {
-  var filteredVisitors = JSON.parse( JSON.stringify(visitors) );
+  var filteredVisitors = [];
+  var visitor;
   var foundIndex;
 
-  for (var i = 0; i < filteredVisitors.length; i++) {
-    foundIndex = filteredVisitors[i].fullName.indexOf(searchField.value);
-    if (foundIndex < 0) {
-      filteredVisitors.splice(i, 1);
+  for (var i = 0; i < visitors.length; i++) {
+    visitor = Object.assign({}, visitors[i]);
+
+    foundIndex = visitor.fullName.indexOf(searchField.value);
+    if (foundIndex >= 0) {
+      filteredVisitors.push(visitor);
       continue;
     }
 
-    foundIndex = filteredVisitors[i].phone.indexOf(searchField.value);
-    if (foundIndex < 0) filteredVisitors.splice(i, 1);
+    foundIndex = visitor.phone.indexOf(searchField.value);
+    if (foundIndex >= 0) filteredVisitors.push(visitor);
   }
 
   fillTable(filteredVisitors);
 });
 
 window.addEventListener("unload", () => {
+  fillTable();
   localStorage.setItem("visitors", JSON.stringify( sortVisitors("id") ));
   localStorage.setItem("visitorCounter", Visitor.counter);
 });

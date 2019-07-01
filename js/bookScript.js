@@ -18,10 +18,10 @@ function fillTable(list) {
   var newTableBody = document.createElement("tbody");
   newTableBody.setAttribute("id", "table-body");
 
-  books = list || JSON.parse(localStorage.getItem("books")) || [];
-  books.forEach((book) => {
-    len = newTableBody.rows.length;
-    newRow = newTableBody.insertRow(len);
+  books = JSON.parse(localStorage.getItem("books")) || [];
+
+  (list || books).forEach((book) => {
+    newRow = newTableBody.insertRow(newTableBody.rows.length);
     index = 0;
 
     for (var prop in book) {
@@ -32,11 +32,11 @@ function fillTable(list) {
     }
 
     newCell = newRow.insertCell(index++);
-    newCell.innerHTML = `<input class="table-btn" onclick="showEditForm(${len})" ` +
+    newCell.innerHTML = `<input class="table-btn" onclick="showEditForm(${book.id})" ` +
                                `type="image" src="media/edit.png" alt="Edit">`;
 
     newCell = newRow.insertCell(index++);
-    newCell.innerHTML = `<input class="table-btn" onclick="deleteFromBooks(${len})"` +
+    newCell.innerHTML = `<input class="table-btn" onclick="deleteFromBooks(${book.id})"` +
                                `type="image" src="media/delete.png" alt="Delete">`;
   });
 
@@ -50,27 +50,28 @@ function saveData() {
   fillTable();
 }
 
-function showEditForm(index) {
+function showEditForm(id) {
   var editForm = document.edit;
+  var book = books.filter((book) => book.id == id)[0];
 
-  editForm.name.value = books[index].name;
-  editForm.author.value = books[index].authorName;
-  editForm.year.value = books[index].publicationYear;
-  editForm.publisher.value = books[index].publisherName;
-  editForm.pages.value = books[index].pagesNumber;
-  editForm.copies.value = books[index].copiesLeft;
+  editForm.name.value = book.name;
+  editForm.author.value = book.authorName;
+  editForm.year.value = book.publicationYear;
+  editForm.publisher.value = book.publisherName;
+  editForm.pages.value = book.pagesNumber;
+  editForm.copies.value = book.copiesLeft;
 
   popupOverlays[1].style.display = "flex";
   popupOverlays[1].style.height = `${document.documentElement.scrollHeight}px`;
 
   editForm.onsubmit = function(e) {
     if (editForm.checkValidity()) {
-      books[index].name = editForm.name.value;
-      books[index].authorName = editForm.author.value;
-      books[index].publicationYear = editForm.year.value;
-      books[index].publisherName = editForm.publisher.value;
-      books[index].pagesNumber = editForm.pages.value;
-      books[index].copiesLeft = editForm.copies.value;
+      book.name = editForm.name.value;
+      book.authorName = editForm.author.value;
+      book.publicationYear = editForm.year.value;
+      book.publisherName = editForm.publisher.value;
+      book.pagesNumber = editForm.pages.value;
+      book.copiesLeft = editForm.copies.value;
 
       saveData();
       popupOverlays[1].style.display = "none";
@@ -79,14 +80,22 @@ function showEditForm(index) {
   };
 }
 
-function deleteFromBooks(index) {
-  books.splice(index, 1);
+function deleteFromBooks(id) {
+  for (var i = 0; i < books.length; i++) {
+    if (books[i].id == id) {
+      books.splice(i, 1);
+      break;
+    }
+  }
   saveData();
 }
 
 function sortBooks(propName) {
   var sortedBooks = JSON.parse( JSON.stringify(books) );
-  sortedBooks.sort((x, y) => x[propName] > y[propName] ? 1 : -1);
+  sortedBooks.sort((x, y) => {
+    if (x[propName] == y[propName]) return 0;
+    return x[propName] > y[propName] ? 1 : -1;
+  });
   return sortedBooks;
 }
 
@@ -99,6 +108,8 @@ fillTable();
 var addButton = document.getElementById("add-btn");
 var sortButton = document.getElementById("sort-btn");
 var sortField = document.getElementById("sort-field");
+var searchButton = document.getElementById("search-btn");
+var searchField = document.getElementById("search-field");
 var popupOverlays = document.getElementsByClassName("popup-overlay");
 var crosses = document.getElementsByClassName("cross");
 var addForm = document.add;
@@ -131,7 +142,36 @@ sortButton.addEventListener("click", () => {
   fillTable( sortBooks(sortField.value) );
 });
 
+searchButton.addEventListener("click", () => {
+  var filteredBooks = [];
+  var book;
+  var foundIndex;
+
+  fillTable();
+
+  for (var i = 0; i < books.length; i++) {
+    book = Object.assign({}, books[i]);
+
+    foundIndex = book.name.indexOf(searchField.value);
+    if (foundIndex >= 0) {
+      filteredBooks.push(book);
+      continue;
+    }
+
+    foundIndex = book.authorName.indexOf(searchField.value);
+    if (foundIndex >= 0) {
+      filteredBooks.push(book);
+      continue;
+    }
+
+    foundIndex = book.publisherName.indexOf(searchField.value);
+    if (foundIndex >= 0) filteredBooks.push(book);
+  }
+
+  fillTable(filteredBooks);
+});
+
 window.addEventListener("unload", () => {
-  localStorage.setItem("books", JSON.stringify( sortBooks("id") ));
+  // localStorage.setItem("books", JSON.stringify( sortBooks("id") ));
   localStorage.setItem("bookCounter", Book.counter);
 });
